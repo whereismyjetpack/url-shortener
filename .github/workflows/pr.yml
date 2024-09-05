@@ -8,6 +8,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  PULL_REQUEST_URL: "null"
 
 jobs:
   preview:
