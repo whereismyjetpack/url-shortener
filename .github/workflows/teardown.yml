@@ -36,8 +36,8 @@ jobs:
 
           if [ -d env/fastify-url-shortner/preview-${{github.event.number}} ]; then 
             rm -rf env/fastify-url-shortner/preview-${{github.event.number}}
+            git checkout -b rm-${{github.event.number}}
             git add .
             git commit -m 'remove preview'
-            git checkout -b rm-${{github.event.number}}
             gh pr create --title 'remove preview' --body 'remove preview'
           fi
