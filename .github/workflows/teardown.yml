@@ -18,14 +18,15 @@ jobs:
     env:
       K8S_DEPLOYMENT_REPO: whereismyjetpack/gitops
     steps:
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
       - name: Checkout Deployment Repo
         uses: actions/checkout@v4
         with:
           repository: ${{ env.K8S_DEPLOYMENT_REPO }}
           token: ${{ secrets.GIT_HUB_ACCESS_TOKEN }}
           path: deployment
+
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
 
       - name: Teardown
         run: |
