@@ -35,5 +35,6 @@ jobs:
             rm -rf env/fastify-url-shortner/preview-${{github.event.number}}
             git add .
             git commit -m 'remove preview'
+            gh auth login
             gh pr create --title 'remove preview' --body 'remove preview'
           fi
