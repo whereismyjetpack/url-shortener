@@ -39,6 +39,6 @@ jobs:
             git checkout -b rm-${{github.event.number}}
             git add .
             git commit -m 'remove preview'
-            git push --set-upstream rm-${{github.event.number}}
+            git push --set-upstream origin rm-${{github.event.number}}
             gh pr create --title 'remove preview' --body 'remove preview'
           fi
