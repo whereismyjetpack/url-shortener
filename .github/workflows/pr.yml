@@ -4,7 +4,7 @@ name: Preview
 on:
   pull_request:
     branches: [ "main" ]
-    types: [labeled, opened, syncronize, reopened]
+    types: [labeled, opened, synchronize, reopened]
 
 env:
   REGISTRY: ghcr.io
