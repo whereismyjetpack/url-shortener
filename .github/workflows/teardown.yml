@@ -25,8 +25,8 @@ jobs:
           token: ${{ secrets.GIT_HUB_ACCESS_TOKEN }}
           path: deployment
 
-      # - name: Setup upterm session
-      #   uses: lhotari/action-upterm@v1
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
 
       - name: Teardown
         run: |
