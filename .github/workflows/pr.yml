@@ -42,7 +42,7 @@ jobs:
           cd deployment
           cp -rf env/fastify-url-shortner/preview env/fastify-url-shortner/preview-${{github.event.number}}
           cd env/fastify-url-shortner/preview-${{github.event.number}}
-          kustomize edit set namespace url-shortner-${{github.event.number}}
+          kustomize edit set namespace url-shortner-preview-${{github.event.number}}
           kustomize edit add patch --kind Ingress --name fastify-url-shortner --patch '[{"op": "replace", "path": "/spec/rules/0/host", "value":"foo-${{github.event.number}}"}]'
 
       - name: Promote to ${{ env.K8S_DEPLOYMENT_REPO }}
