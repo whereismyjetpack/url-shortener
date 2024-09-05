@@ -2,8 +2,9 @@
 name: Preview
 
 on:
+  label:
+    types: [created, edited]
   pull_request:
-    types: [ labeled ]
     branches: [ "main" ]
 
 env:
