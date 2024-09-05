@@ -2,10 +2,9 @@
 name: Preview
 
 on:
-  label:
-    types: [created, edited]
   pull_request:
     branches: [ "main" ]
+    types: [labeled]
 
 env:
   REGISTRY: ghcr.io
