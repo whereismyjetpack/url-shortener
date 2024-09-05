@@ -16,6 +16,8 @@ jobs:
     # if: ${{ github.event.label.name == 'preview' }}
     if: contains( github.event.pull_request.labels.*.name, 'preview')
     runs-on: ubuntu-latest
+    env:
+      K8S_DEPLOYMENT_REPO: whereismyjetpack/gitops
 
     steps:
       - name: Wait on Workflow
@@ -27,14 +29,6 @@ jobs:
           timeout: 60
           sha: ${{ github.event.pull_request.head.sha || github.sha }}
 
-  deploy-preview:
-    if: contains( github.event.pull_request.labels.*.name, 'preview')
-    # if: ${{ github.event.label.name == 'preview' }}
-    name: Deploy to preview env
-    runs-on: ubuntu-latest
-    env:
-      K8S_DEPLOYMENT_REPO: whereismyjetpack/gitops
-    steps:
       - uses: imranismail/setup-kustomize@v2
       - name: Checkout Deployment Repo
         uses: actions/checkout@v4
