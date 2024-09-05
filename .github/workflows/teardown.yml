@@ -1,0 +1,39 @@
+---
+name: Preview
+
+on:
+  pull_request:
+    types: [ closed ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  GH_TOKEN:  ${{ github.token }}
+
+jobs:
+  teardown-preview:
+    # if: ${{ github.event.label.name == 'preview' }}
+    name: Teardown Preview Env
+    runs-on: ubuntu-latest
+    env:
+      K8S_DEPLOYMENT_REPO: whereismyjetpack/gitops
+    steps:
+      - name: Checkout Deployment Repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.K8S_DEPLOYMENT_REPO }}
+          token: ${{ secrets.GIT_HUB_ACCESS_TOKEN }}
+          path: deployment
+
+      - name: Teardown
+        run: |
+          cd deployment
+          git config --global user.email "whereismyjetpack@noreply.github.io"
+          git config --global user.name "Dann"
+
+          if [ -d env/fastify-url-shortner/preview-${{github.event.number}} ]; then 
+            rm -rf env/fastify-url-shortner/preview-${{github.event.number}}
+            git add .
+            git commit -m 'remove preview'
+            gh pr create --title 'remove preview' --body 'remove preview'
+          fi
