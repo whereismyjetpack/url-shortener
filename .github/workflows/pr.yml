@@ -3,8 +3,8 @@ name: Preview
 
 on:
   pull_request:
-    types: [ labeled ]
-    branches: [ main ]
+    # types: [ labeled ]
+    branches: [ "main" ]
 
 env:
   REGISTRY: ghcr.io
