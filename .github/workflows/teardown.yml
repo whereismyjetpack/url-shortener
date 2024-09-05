@@ -39,5 +39,5 @@ jobs:
             git checkout -b rm-${{github.event.number}}
             git add .
             git commit -m 'remove preview'
-            gh pr create --title 'remove preview' --body 'remove preview' --head
+            gh pr create --title 'remove preview' --body 'remove preview' --head rm-${{github.event.number}}
           fi
