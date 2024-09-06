@@ -54,6 +54,13 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      - name: Checkout Deployment Repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.K8S_DEPLOYMENT_REPO }}
+          token: ${{ secrets.GIT_HUB_ACCESS_TOKEN }}
+          path: deployment
+
       - name: Promote to ${{ env.K8S_DEPLOYMENT_REPO }}
         uses: kustomize-everything/action-promote@v4.2.1
         with:
