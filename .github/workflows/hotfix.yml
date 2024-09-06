@@ -1,0 +1,50 @@
+---
+name: Hotfix
+
+on:
+  pull_request:
+    branches: [ "main" ]
+    types: [labeled, opened, synchronize, reopened]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  PULL_REQUEST_URL: "null"
+
+jobs:
+  preview:
+    if: contains( github.event.pull_request.labels.*.name, 'hotfix')
+    runs-on: ubuntu-latest
+    env:
+      K8S_DEPLOYMENT_REPO: whereismyjetpack/gitops
+
+    steps:
+      - name: Wait on Workflow
+        uses: lucasssvaz/wait-on-workflow@v1
+        with:
+          workflow: main.yml
+          max-wait: 3
+          interval: 5
+          timeout: 60
+          sha: ${{ github.event.pull_request.head.sha || github.sha }}
+
+
+      - name: Promote to ${{ env.K8S_DEPLOYMENT_REPO }} - hotfix
+        uses: kustomize-everything/action-promote@v4.2.1
+        with:
+          images: |-
+            [
+              {
+                "name": "fastify-url-shortner",
+                "newName": "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}",
+                "newTag": "${{ github.event.pull_request.head.sha || github.sha }}",
+                "overlays": ["env/fastify-url-shortner/staging"]
+              }
+            ]
+          target-repo: ${{ env.K8S_DEPLOYMENT_REPO }}
+          promotion-method: push
+          working-directory: deployment
+          github-token: ${{ secrets.GIT_HUB_ACCESS_TOKEN }}
+          git-commit-user: 'whereismyjetpack'
+          git-commit-email: 'mail@mail.mail'
+

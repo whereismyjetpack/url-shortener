@@ -13,7 +13,7 @@ env:
 
 jobs:
   preview:
-    if: contains( github.event.pull_request.labels.*.name, 'preview') || contains(github.event.pull_request.labels.*.name, 'hotfix')
+    if: contains( github.event.pull_request.labels.*.name, 'preview')
     runs-on: ubuntu-latest
     env:
       K8S_DEPLOYMENT_REPO: whereismyjetpack/gitops
@@ -66,23 +66,5 @@ jobs:
           git-commit-user: 'whereismyjetpack'
           git-commit-email: 'mail@mail.mail'
 
-      - name: Promote to ${{ env.K8S_DEPLOYMENT_REPO }} - hotfix
-        if: contains( github.event.pull_request.labels.*.name, 'hotfix')
-        uses: kustomize-everything/action-promote@v4.2.1
-        with:
-          images: |-
-            [
-              {
-                "name": "fastify-url-shortner",
-                "newName": "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}",
-                "newTag": "${{ github.event.pull_request.head.sha || github.sha }}",
-                "overlays": ["env/fastify-url-shortner/preview-${{github.event.number}}"]
-              }
-            ]
-          target-repo: ${{ env.K8S_DEPLOYMENT_REPO }}
-          promotion-method: push
-          working-directory: deployment
-          github-token: ${{ secrets.GIT_HUB_ACCESS_TOKEN }}
-          git-commit-user: 'whereismyjetpack'
-          git-commit-email: 'mail@mail.mail'
+
 
