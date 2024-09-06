@@ -47,17 +47,15 @@ jobs:
           echo "Latest version is ${{ steps.version.outputs.latest-version }}"
           echo "Next version is ${{ steps.version.outputs.next-version }}"
           if [ $(git rev-list -n 1 ${{ steps.version.outputs.latest-version}}) = $(git rev-list -n 1 HEAD) ]; then 
-            changed=false >> "$GITHUB_OUTPUT"
+
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           else
-            changed=true >> "$GITHUB_OUTPUT"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
       - name: debug
         run: |
           echo "${{ steps.check.outputs.changed}}"
-
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
 
       - name: Create Release
         if: ${{steps.check.outputs.changed == 'true' }}
