@@ -19,6 +19,8 @@ env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
   K8S_DEPLOYMENT_REPO: whereismyjetpack/gitops
+  # action-promote needs this set
+  PULL_REQUEST_URL: "null"
 
 jobs:
   build:

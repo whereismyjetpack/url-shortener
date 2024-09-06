@@ -1,0 +1,33 @@
+name: Promote to Staging
+
+on: [workflow_dispatch]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  K8S_DEPLOYMENT_REPO: whereismyjetpack/gitops
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Deployment Repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.K8S_DEPLOYMENT_REPO }}
+          token: ${{ secrets.GIT_HUB_ACCESS_TOKEN }}
+          path: deployment
+
+      - name: Promote
+        uses: kustomize-everything/action-promote@4.2.1
+        with:
+          images: |-
+            [
+              {
+                "name": "fastify-url-shortner",
+                "fromOverlay": "env/fastify-url-shortner/integration",
+                "overlays": ["env/fastify-url-shortner/staging"]
+              }
+            ]
+
+
