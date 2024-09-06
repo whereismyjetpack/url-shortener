@@ -8,9 +8,37 @@ env:
   K8S_DEPLOYMENT_REPO: whereismyjetpack/gitops
 
 jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Perform release
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Cocogitto release
+        id: release
+        uses: oknozor/cocogitto-action@v3
+        with:
+          release: true
+          git-user: 'whereismyjetpack'
+          git-user-email: 'whereismyjetpack@noreply.github.io'
+
+      - name: Generate Changelog
+        run: cog changelog --at ${{ steps.release.outputs.version }} -t full_hash > GITHUB_CHANGELOG.md
+
+      - name: Upload github release
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: GITHUB_CHANGELOG.md
+          tag_name: ${{ steps.release.outputs.version }}
+
   promote:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Checkout Deployment Repo
         uses: actions/checkout@v4
         with:
