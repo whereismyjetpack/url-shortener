@@ -41,10 +41,8 @@ jobs:
 
   promote:
     runs-on: ubuntu-latest
+    needs: [release]
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: Checkout Deployment Repo
         uses: actions/checkout@v4
         with:
@@ -63,5 +61,12 @@ jobs:
                 "overlays": ["env/fastify-url-shortner/staging"]
               }
             ]
+          target-repo: ${{ env.K8S_DEPLOYMENT_REPO }}
+          promotion-method: push
+          working-directory: deployment
+          github-token: ${{ secrets.GIT_HUB_ACCESS_TOKEN }}
+          git-commit-user: 'whereismyjetpack'
+          git-commit-email: 'mail@mail.mail'
+
 
 
