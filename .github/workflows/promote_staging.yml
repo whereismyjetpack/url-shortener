@@ -29,13 +29,17 @@ jobs:
         with:
           fetch-tags: true
           fetch-depth: 0
-        
+
+      # Determine the next version of the software. The action we are using here determines 
+      # the next version based off PR labels. 
+      # Major - major,breaking
+      # Minor - minor
       - id: version
         uses: fabien-marty/github-next-semantic-version-action@v1
         with:
-          github-token: ${{ github.token }} # Let's use the default value of the current workflow
-          repository: ${{ github.repository }} # Let's use the default value of the current workflow
-          repository-owner: ${{ github.repository_owner }} # Let's use the default value of the current workflow
+          github-token: ${{ github.token }} 
+          repository: ${{ github.repository }}
+          repository-owner: ${{ github.repository_owner }}
         
       # We check HEAD against the last released version of the software
       # If they are the same, we don't need to cut another release.
@@ -51,10 +55,7 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: debug
-        run: |
-          echo "${{ steps.check.outputs.changed}}"
-
+      # Create Release If we need to
       - name: Create Release
         if: ${{steps.check.outputs.changed == 'true' }}
         run: |
