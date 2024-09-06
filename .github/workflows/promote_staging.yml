@@ -20,6 +20,7 @@ jobs:
         id: release
         uses: oknozor/cocogitto-action@v3
         with:
+          check: false
           release: true
           git-user: 'whereismyjetpack'
           git-user-email: 'whereismyjetpack@noreply.github.io'
