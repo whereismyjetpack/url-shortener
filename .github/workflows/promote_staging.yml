@@ -4,6 +4,7 @@ on: [workflow_dispatch]
 
 env:
   REGISTRY: ghcr.io
+  GH_TOKEN: ${{ github.token }}
   IMAGE_NAME: ${{ github.repository }}
   K8S_DEPLOYMENT_REPO: whereismyjetpack/gitops
 
