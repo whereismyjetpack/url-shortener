@@ -18,7 +18,7 @@ env:
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
-
+  K8S_DEPLOYMENT_REPO: whereismyjetpack/gitops
 
 jobs:
   build:
@@ -53,3 +53,22 @@ jobs:
           tags: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.event.pull_request.head.sha || github.sha }}"
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Promote to ${{ env.K8S_DEPLOYMENT_REPO }}
+        uses: kustomize-everything/action-promote@v4.2.1
+        with:
+          images: |-
+            [
+              {
+                "name": "fastify-url-shortner",
+                "newName": "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}",
+                "newTag": "${{ github.event.pull_request.head.sha || github.sha }}",
+                "overlays": ["env/fastify-url-shortner/integration"]
+              }
+            ]
+          target-repo: ${{ env.K8S_DEPLOYMENT_REPO }}
+          promotion-method: push
+          working-directory: deployment
+          github-token: ${{ secrets.GIT_HUB_ACCESS_TOKEN }}
+          git-commit-user: 'whereismyjetpack'
+          git-commit-email: 'mail@mail.mail'
