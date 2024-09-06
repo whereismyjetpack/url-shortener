@@ -23,23 +23,26 @@ jobs:
           sha: ${{ github.event.pull_request.head.sha || github.sha }}
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
+          fetch-tags: true
           fetch-depth: 0
 
-      - name: Get next version
-        id: get_next_version
-        uses: thenativeweb/get-next-version@2.6.3
+      - id: version
+        uses: fabien-marty/github-next-semantic-version-action@v1
         with:
-          prefix: 'v' # optional, defaults to ''
-      - name: Show the next version
+          github-token: ${{ github.token }} # Let's use the default value of the current workflow
+          repository: ${{ github.repository }} # Let's use the default value of the current workflow
+          repository-owner: ${{ github.repository_owner }} # Let's use the default value of the current workflow
+        
+      - name: Use results
         run: |
-          echo ${{ steps.get_next_version.outputs.version }}
-          echo ${{ steps.get_next_version.outputs.hasNextVersion }}
+          echo "Latest version is ${{ steps.version.outputs.latest-version }}"
+          echo "Next version is ${{ steps.version.outputs.next-version }}"
 
       - name: Create Release
         run: |
-          gh release create ${{ steps.get_next_version.outputs.version }} --generate-notes
+          gh release create ${{ steps.version.outputs.next-version }} --generate-notes
 
   promote:
     runs-on: ubuntu-latest
