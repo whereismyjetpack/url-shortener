@@ -1,3 +1,7 @@
+## Workflow used to promote an environment from integration (main) to staging, using the artifact from the main branch 
+## This workflow will attempt to find the next version of the software, create a github release, and then promote the 
+## integration overlay to the staging environment
+---
 name: Promote to Staging
 
 on: [workflow_dispatch]
@@ -13,27 +17,19 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      # We depend on the main workflow to run, build a docker image, and deploy to integration. 
+      # If that step doesn't complete, or hasn't completed -- we will fail fast here
       - name: Wait for workflow
         uses: ArcticLampyrid/action-wait-for-workflow@v1.2.0
         with:
           workflow: main.yml
   
-      # - name: Wait on Workflow
-      #   id: wait-on-workflow
-      #   uses: lucasssvaz/wait-on-workflow@v1
-      #   with:
-      #     workflow: main.yml
-      #     max-wait: 3
-      #     interval: 5
-      #     timeout: 60
-      #     sha: ${{ github.event.pull_request.head.sha || github.sha }}
-
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-tags: true
           fetch-depth: 0
-
+        
       - id: version
         uses: fabien-marty/github-next-semantic-version-action@v1
         with:
@@ -41,6 +37,8 @@ jobs:
           repository: ${{ github.repository }} # Let's use the default value of the current workflow
           repository-owner: ${{ github.repository_owner }} # Let's use the default value of the current workflow
         
+      # We check HEAD against the last released version of the software
+      # If they are the same, we don't need to cut another release.
       - name: Check release
         id: check
         run: |

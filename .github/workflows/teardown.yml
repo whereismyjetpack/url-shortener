@@ -1,5 +1,5 @@
 ---
-name: Preview
+name: Teardown Preview Environment
 
 on:
   pull_request:
