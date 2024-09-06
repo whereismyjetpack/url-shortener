@@ -11,14 +11,23 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - name: Perform release
+      - name: Wait on Workflow
+        uses: lucasssvaz/wait-on-workflow@v1
+        with:
+          workflow: main.yml
+          max-wait: 3
+          interval: 5
+          timeout: 60
+          sha: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
       - name: Get next version
         id: get_next_version
-        uses: thenativeweb/get-next-version@main
+        uses: thenativeweb/get-next-version@2.6.3
         with:
           prefix: 'v' # optional, defaults to ''
       - name: Show the next version
@@ -26,11 +35,9 @@ jobs:
           echo ${{ steps.get_next_version.outputs.version }}
           echo ${{ steps.get_next_version.outputs.hasNextVersion }}
 
-      - name: Upload github release
-        uses: softprops/action-gh-release@v1
-        with:
-          body_path: GITHUB_CHANGELOG.md
-          tag_name: ${{ steps.get_next_version.outputs.version }}
+      - name: Create Release
+        run: |
+          gh release create ${{ steps.get_next_version.outputs.version }} --generate-notes
 
   promote:
     runs-on: ubuntu-latest
