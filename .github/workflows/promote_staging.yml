@@ -16,23 +16,21 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Cocogitto release
-        id: release
-        uses: oknozor/cocogitto-action@v3
+      - name: Get next version
+        id: get_next_version
+        uses: thenativeweb/get-next-version@main
         with:
-          check: false
-          release: true
-          git-user: 'whereismyjetpack'
-          git-user-email: 'whereismyjetpack@noreply.github.io'
+          prefix: 'v' # optional, defaults to ''
+      - name: Show the next version
+        run: |
+          echo ${{ steps.get_next_version.outputs.version }}
+          echo ${{ steps.get_next_version.outputs.hasNextVersion }}
 
-      - name: Generate Changelog
-        run: cog changelog --at ${{ steps.release.outputs.version }} -t full_hash > GITHUB_CHANGELOG.md
-
-      - name: Upload github release
-        uses: softprops/action-gh-release@v1
-        with:
-          body_path: GITHUB_CHANGELOG.md
-          tag_name: ${{ steps.release.outputs.version }}
+      # - name: Upload github release
+      #   uses: softprops/action-gh-release@v1
+      #   with:
+      #     body_path: GITHUB_CHANGELOG.md
+      #     tag_name: ${{ steps.release.outputs.version }}
 
   promote:
     runs-on: ubuntu-latest
