@@ -6,6 +6,7 @@ env:
   REGISTRY: ghcr.io
   GH_TOKEN: ${{ github.token }}
   IMAGE_NAME: ${{ github.repository }}
+  PULL_REQUEST_URL: "null"
   K8S_DEPLOYMENT_REPO: whereismyjetpack/gitops
 
 jobs:
