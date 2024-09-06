@@ -26,11 +26,11 @@ jobs:
           echo ${{ steps.get_next_version.outputs.version }}
           echo ${{ steps.get_next_version.outputs.hasNextVersion }}
 
-      # - name: Upload github release
-      #   uses: softprops/action-gh-release@v1
-      #   with:
-      #     body_path: GITHUB_CHANGELOG.md
-      #     tag_name: ${{ steps.release.outputs.version }}
+      - name: Upload github release
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: GITHUB_CHANGELOG.md
+          tag_name: ${{ steps.get_next_version.outputs.version }}
 
   promote:
     runs-on: ubuntu-latest
@@ -46,7 +46,7 @@ jobs:
           path: deployment
 
       - name: Promote
-        uses: kustomize-everything/action-promote@4.2.1
+        uses: kustomize-everything/action-promote@v4.2.1
         with:
           images: |-
             [
