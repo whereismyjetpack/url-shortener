@@ -3,6 +3,7 @@ FROM node:20.16-alpine3.19 as dev
 WORKDIR /build
 
 COPY package*.json /build/
+ENV fix=true
 
 RUN npm ci && npm cache clean --force
 
