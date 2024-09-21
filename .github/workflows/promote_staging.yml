@@ -74,7 +74,8 @@ jobs:
           jira-email: 'dannbohn@gmail.com'
           jira-api-token: ${{ secrets.JIRA_TOKEN }}
           project-name: 'KAN'
-          release-name: ${{ needs.release.outputs.version }}
+          release-name: 'things'
+          # release-name: ${{ needs.release.outputs.version }}
 
   promote:
     runs-on: ubuntu-latest
