@@ -63,6 +63,7 @@ jobs:
 
   promote:
     runs-on: ubuntu-latest
+    environment: staging
     needs: [release]
     steps:
       - name: start deployment
