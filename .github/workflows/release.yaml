@@ -1,7 +1,10 @@
+name: Jira Release
+
 on:
   push:
     tags:        
     - '*'
+
 jobs:
   jira-release:
     runs-on: ubuntu-latest
