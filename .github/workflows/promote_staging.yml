@@ -70,7 +70,7 @@ jobs:
       - name: create release
         uses: Rorychan/jira-releases-action@v1
         with:
-          jira-server: 'https://dannbohn.atlassian.com'
+          jira-server: 'https://dannbohn.atlassian.net'
           jira-email: 'dannbohn@gmail.com'
           jira-api-token: ${{ secrets.JIRA_TOKEN }}
           project-name: 'KAN'
