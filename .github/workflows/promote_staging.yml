@@ -61,17 +61,6 @@ jobs:
         run: |
           gh release create ${{ steps.version.outputs.next-version }} --generate-notes
 
-  jira-release:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: Medsien/release-to-jira@main
-        with:
-          jira_server: 'https://dannbohn.atlassian.net'
-          jira_project: 'KAN'
-          jira_user: 'dannbohn@gmail.com'
-          jira_token: '${{ secrets.JIRA_TOKEN }}'
-
   promote:
     runs-on: ubuntu-latest
     environment: staging
