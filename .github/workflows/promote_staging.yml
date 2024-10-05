@@ -99,6 +99,7 @@ jobs:
 
       - name: Promote
         uses: kustomize-everything/action-promote@v4.2.1
+        id: promote
         with:
           images: |-
             [
@@ -114,6 +115,10 @@ jobs:
           github-token: ${{ secrets.GIT_HUB_ACCESS_TOKEN }}
           git-commit-user: 'whereismyjetpack'
           git-commit-email: 'mail@mail.mail'
+
+      - name: debug
+        run: |
+          echo "${{ steps.promote.outputs.images-updated }}"
 
       - name: update deployment status
         uses: bobheadxi/deployments@v1
