@@ -63,18 +63,18 @@ jobs:
         run: |
           gh release create ${{ steps.version.outputs.next-version }} --generate-notes
 
-  create-jira-release:
-    runs-on: ubuntu-latest
-    needs: [release]
-    steps:
-      - name: create release
-        uses: Rorychan/jira-releases-action@v1
-        with:
-          jira-server: 'https://dannbohn.atlassian.net'
-          jira-email: 'dannbohn@gmail.com'
-          jira-api-token: ${{ secrets.JIRA_TOKEN }}
-          project-name: 'KAN'
-          release-name: 'things'
+  # create-jira-release:
+  #   runs-on: ubuntu-latest
+  #   needs: [release]
+  #   steps:
+  #     - name: create release
+  #       uses: Rorychan/jira-releases-action@v1
+  #       with:
+  #         jira-server: 'https://dannbohn.atlassian.net'
+  #         jira-email: 'dannbohn@gmail.com'
+  #         jira-api-token: ${{ secrets.JIRA_TOKEN }}
+  #         project-name: 'KAN'
+  #         release-name: 'things'
           # release-name: ${{ needs.release.outputs.version }}
 
   promote:
