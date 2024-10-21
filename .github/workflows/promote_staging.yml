@@ -78,6 +78,9 @@ jobs:
           # release-name: ${{ needs.release.outputs.version }}
 
   promote:
+    concurrency:
+      group: staging_environment
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     environment: staging
     needs: [release]
