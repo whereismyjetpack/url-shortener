@@ -32,4 +32,4 @@ jobs:
           git push origin HEAD:"$branch"
           gh pr create --head "$branch" --title "Update ${CHANNEL}" \
             --body "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
-          gh pr merge "$branch" --merge
+          gh pr merge "$branch" --merge --auto
