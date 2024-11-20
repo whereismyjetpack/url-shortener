@@ -40,7 +40,7 @@ jobs:
 
 
       - name: Promote to ${{ env.K8S_DEPLOYMENT_REPO }} - hotfix
-        uses: kustomize-everything/action-promote@v4.3.4
+        uses: kustomize-everything/action-promote@v4.3.3
         with:
           images: |-
             [

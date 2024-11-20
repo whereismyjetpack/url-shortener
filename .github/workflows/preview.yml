@@ -48,7 +48,7 @@ jobs:
 
       - name: Promote to ${{ env.K8S_DEPLOYMENT_REPO }} - preview
         if: contains( github.event.pull_request.labels.*.name, 'preview')
-        uses: kustomize-everything/action-promote@v4.3.4
+        uses: kustomize-everything/action-promote@v4.3.3
         with:
           images: |-
             [
