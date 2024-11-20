@@ -101,7 +101,7 @@ jobs:
           path: deployment
 
       - name: Promote
-        uses: kustomize-everything/action-promote@v4.3.1
+        uses: kustomize-everything/action-promote@v4.3.3
         id: promote
         with:
           images: |-
