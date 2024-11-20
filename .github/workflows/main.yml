@@ -65,8 +65,6 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    concurrency:
-      group: deploy
     permissions:
       contents: read
       packages: write
