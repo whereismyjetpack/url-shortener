@@ -86,7 +86,7 @@ jobs:
                 "name": "fastify-url-shortner",
                 "newName": "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}",
                 "newTag": "${{ github.event.pull_request.head.sha || github.sha }}",
-                "overlays": ["env/fastify-url-shortner/integration"]
+                "overlays": ["env/fastify-url-shortner/${{ github.ref_name }}"]
               }
             ]
           target-repo: ${{ env.K8S_DEPLOYMENT_REPO }}
