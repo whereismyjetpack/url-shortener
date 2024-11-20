@@ -80,7 +80,7 @@ jobs:
           path: deployment
 
       - name: Promote to ${{ env.K8S_DEPLOYMENT_REPO }}
-        uses: kustomize-everything/action-promote@v4.2.1
+        uses: kustomize-everything/action-promote@fix-retry-logic
         with:
           images: |-
             [
