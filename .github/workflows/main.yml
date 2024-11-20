@@ -90,7 +90,7 @@ jobs:
               }
             ]
           target-repo: ${{ env.K8S_DEPLOYMENT_REPO }}
-          promotion-method: push
+          promotion-method: pull_request
           working-directory: deployment
           github-token: ${{ secrets.GIT_HUB_ACCESS_TOKEN }}
           git-commit-user: 'whereismyjetpack'
