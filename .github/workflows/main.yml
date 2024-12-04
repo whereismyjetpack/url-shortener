@@ -95,6 +95,7 @@ jobs:
           working-directory: deployment
           github-token: ${{ secrets.GIT_HUB_ACCESS_TOKEN }}
           git-commit-user: 'whereismyjetpack'
+          pr-unique-key: 1
           git-commit-email: 'mail@mail.mail'
 
       - name: Promote to ${{ env.K8S_DEPLOYMENT_REPO }}
@@ -114,6 +115,7 @@ jobs:
           auto-merge: false
           working-directory: deployment
           github-token: ${{ secrets.GIT_HUB_ACCESS_TOKEN }}
+          pr-unique-key: 2
           git-commit-user: 'whereismyjetpack'
           git-commit-email: 'mail@mail.mail'
 
