@@ -85,13 +85,35 @@ jobs:
               {
                 "name": "fastify-url-shortner",
                 "newName": "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}",
-                "newTag": "${{ github.event.pull_request.head.sha || github.sha }}",
+                "newTag": "${{ github.event.pull_request.head.sha || github.sha }}1",
                 "overlays": ["env/fastify-url-shortner/${{ github.ref_name }}"]
               }
             ]
           target-repo: ${{ env.K8S_DEPLOYMENT_REPO }}
           promotion-method: pull_request
+          auto-merge: false
           working-directory: deployment
           github-token: ${{ secrets.GIT_HUB_ACCESS_TOKEN }}
           git-commit-user: 'whereismyjetpack'
           git-commit-email: 'mail@mail.mail'
+
+      - name: Promote to ${{ env.K8S_DEPLOYMENT_REPO }}
+        uses: kustomize-everything/action-promote@v4.3.3
+        with:
+          images: |-
+            [
+              {
+                "name": "fastify-url-shortner",
+                "newName": "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}",
+                "newTag": "${{ github.event.pull_request.head.sha || github.sha }}1",
+                "overlays": ["env/fastify-url-shortner/${{ github.ref_name }}"]
+              }
+            ]
+          target-repo: ${{ env.K8S_DEPLOYMENT_REPO }}
+          promotion-method: pull_request
+          auto-merge: false
+          working-directory: deployment
+          github-token: ${{ secrets.GIT_HUB_ACCESS_TOKEN }}
+          git-commit-user: 'whereismyjetpack'
+          git-commit-email: 'mail@mail.mail'
+
