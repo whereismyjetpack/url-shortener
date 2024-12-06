@@ -92,7 +92,7 @@ jobs:
           target-repo: ${{ env.K8S_DEPLOYMENT_REPO }}
           promotion-method: pull_request
           auto-merge: false
-          pr-reviewer: "${{ github.actor }}"
+          # pr-reviewer: "${{ github.actor }}"
           working-directory: deployment
           github-token: ${{ secrets.GIT_HUB_ACCESS_TOKEN }}
           git-commit-user: 'whereismyjetpack'
@@ -113,7 +113,7 @@ jobs:
             ]
           target-repo: ${{ env.K8S_DEPLOYMENT_REPO }}
           promotion-method: pull_request
-          pr-reviewer: "${{ github.actor }}"
+          # pr-reviewer: "${{ github.actor }}"
           auto-merge: false
           working-directory: deployment
           github-token: ${{ secrets.GIT_HUB_ACCESS_TOKEN }}
