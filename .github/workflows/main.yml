@@ -78,7 +78,7 @@ jobs:
           path: deployment
 
       - name: Promote to ${{ env.K8S_DEPLOYMENT_REPO }}
-        uses: kustomize-everything/action-promote@v4.3.3
+        uses: kustomize-everything/action-promote@reviewer
         with:
           images: |-
             [
@@ -92,6 +92,7 @@ jobs:
           target-repo: ${{ env.K8S_DEPLOYMENT_REPO }}
           promotion-method: pull_request
           auto-merge: false
+          # pr-reviewer: "${{ github.actor }}"
           working-directory: deployment
           github-token: ${{ secrets.GIT_HUB_ACCESS_TOKEN }}
           git-commit-user: 'whereismyjetpack'
@@ -99,7 +100,7 @@ jobs:
           git-commit-email: 'mail@mail.mail'
 
       - name: Promote to ${{ env.K8S_DEPLOYMENT_REPO }}
-        uses: kustomize-everything/action-promote@v4.3.3
+        uses: kustomize-everything/action-promote@reviewer
         with:
           images: |-
             [
@@ -112,6 +113,7 @@ jobs:
             ]
           target-repo: ${{ env.K8S_DEPLOYMENT_REPO }}
           promotion-method: pull_request
+          # pr-reviewer: "${{ github.actor }}"
           auto-merge: false
           working-directory: deployment
           github-token: ${{ secrets.GIT_HUB_ACCESS_TOKEN }}
