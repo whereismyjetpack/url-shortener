@@ -85,7 +85,7 @@ jobs:
               {
                 "name": "fastify-url-shortner",
                 "newName": "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}",
-                "newTag": "${{ github.event.pull_request.head.sha || github.sha }}1",
+                "newTag": "${{ github.event.pull_request.head.sha || github.sha }}2",
                 "overlays": ["env/fastify-url-shortner/${{ github.ref_name }}"]
               }
             ]
@@ -107,7 +107,7 @@ jobs:
               {
                 "name": "fastify-url-shortner",
                 "newName": "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}",
-                "newTag": "${{ github.event.pull_request.head.sha || github.sha }}2",
+                "newTag": "${{ github.event.pull_request.head.sha || github.sha }}3",
                 "overlays": ["env/fastify-url-shortner/${{ github.ref_name }}"]
               }
             ]
