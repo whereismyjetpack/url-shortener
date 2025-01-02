@@ -91,7 +91,7 @@ jobs:
             ]
           target-repo: ${{ env.K8S_DEPLOYMENT_REPO }}
           promotion-method: pull_request
-          pr-reviewer: whereismyjetpack
+          pr-reviewer: ${{ github.actor}}
           auto-merge: false
           working-directory: deployment
           github-token: ${{ secrets.GIT_HUB_ACCESS_TOKEN }}
