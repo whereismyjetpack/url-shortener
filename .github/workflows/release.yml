@@ -1,0 +1,21 @@
+name: Pre-Release to Staging
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '00 17 * * 1,2,3,4,5'
+
+permissions:
+  id-token: write
+  actions: write
+  contents: write
+  packages: write
+
+jobs:
+  detect-changes:
+    name: 'Detect Changes Since last release'
+    runs-on: ubuntu-latest
+    steps:
+      - name: get changed apps
+        id: get_changed_apps
+        run: |

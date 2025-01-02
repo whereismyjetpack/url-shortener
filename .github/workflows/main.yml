@@ -78,7 +78,7 @@ jobs:
           path: deployment
 
       - name: Promote to ${{ env.K8S_DEPLOYMENT_REPO }}
-        uses: kustomize-everything/action-promote@v4.3.3
+        uses: kustomize-everything/action-promote@reviewer
         with:
           images: |-
             [
@@ -91,6 +91,8 @@ jobs:
             ]
           target-repo: ${{ env.K8S_DEPLOYMENT_REPO }}
           promotion-method: pull_request
+          pr-revewer: ${{ env.GITHUB_ACTOR}}
+          auto_merge: false
           working-directory: deployment
           github-token: ${{ secrets.GIT_HUB_ACCESS_TOKEN }}
           git-commit-user: 'whereismyjetpack'
