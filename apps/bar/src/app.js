@@ -35,3 +35,4 @@ await fastifyApp.register(fastifyStatic, {
 await fastifyApp.register(routes);
 
 export default fastifyApp;
+export default fastifyApp;
