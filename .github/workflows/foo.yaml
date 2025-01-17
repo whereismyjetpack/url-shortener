@@ -33,7 +33,7 @@ jobs:
     needs: changed-files
     strategy:
       matrix:
-        app: "${{ needs.changed-files.outputs.all_changed_files }}"
+        app: "${{ fromJson(needs.changed-files.outputs.all_changed_files) }}"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
