@@ -19,7 +19,7 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v45
         with:
-          # Avoid using single or double quotes for multiline patterns
+          json: "true"
           files: "apps/**"
           dir_names: "true"
           dir_names_max_depth: "2"
