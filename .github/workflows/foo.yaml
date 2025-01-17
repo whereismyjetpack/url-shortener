@@ -2,11 +2,11 @@
 name: Foo Release
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'apps/**'
+  workflow_dispatch:
+    # branches:
+    #   - main
+    # paths:
+    #   - 'apps/**'
 
 jobs:
   changed-files:
