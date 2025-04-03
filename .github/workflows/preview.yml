@@ -7,64 +7,48 @@ on:
     types: [labeled, opened, synchronize, reopened]
 
 env:
+  # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
+  K8S_DEPLOYMENT_REPO: whereismyjetpack/gitops
+  # action-promote needs this set
   PULL_REQUEST_URL: "null"
 
 jobs:
-  preview:
-    if: contains( github.event.pull_request.labels.*.name, 'preview')
+  build:
+
     runs-on: ubuntu-latest
-    env:
-      K8S_DEPLOYMENT_REPO: whereismyjetpack/gitops
-
+    permissions:
+      contents: read
+      packages: write
     steps:
-      - name: Wait on Workflow
-        uses: lucasssvaz/wait-on-workflow@v1
-        with:
-          workflow: main.yml
-          max-wait: 3
-          interval: 5
-          timeout: 60
-          sha: ${{ github.event.pull_request.head.sha || github.sha }}
-
-      - uses: imranismail/setup-kustomize@v2
-      - name: Checkout Deployment Repo
-        if: contains( github.event.pull_request.labels.*.name, 'preview')
+      - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3.0.0
+
+      # Login against a Docker registry except on PR
+      # https://github.com/docker/login-action
+      - name: Log into registry ${{ env.REGISTRY }}
+        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
         with:
-          repository: ${{ env.K8S_DEPLOYMENT_REPO }}
-          token: ${{ secrets.GIT_HUB_ACCESS_TOKEN }}
-          path: deployment
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create a new preview from template
-        if: contains( github.event.pull_request.labels.*.name, 'preview')
-        run: |
-          cd deployment
-          cp -rf env/fastify-url-shortner/preview env/fastify-url-shortner/preview-${{github.event.number}}
-          cd env/fastify-url-shortner/preview-${{github.event.number}}
-          kustomize edit set namespace url-shortner-preview-${{github.event.number}}
-          kustomize edit add patch --kind Ingress --name fastify-url-shortner --patch '[{"op": "replace", "path": "/spec/rules/0/host", "value":"foo-${{github.event.number}}"}]'
+      # - name: fail
+      #   run: |
+      #     exit 1
 
-      - name: Promote to ${{ env.K8S_DEPLOYMENT_REPO }} - preview
-        if: contains( github.event.pull_request.labels.*.name, 'preview')
-        uses: kustomize-everything/action-promote@v4.3.3
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
         with:
-          images: |-
-            [
-              {
-                "name": "fastify-url-shortner",
-                "newName": "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}",
-                "newTag": "${{ github.event.pull_request.head.sha || github.sha }}",
-                "overlays": ["env/fastify-url-shortner/preview-${{github.event.number}}"]
-              }
-            ]
-          target-repo: ${{ env.K8S_DEPLOYMENT_REPO }}
-          promotion-method: push
-          working-directory: deployment
-          github-token: ${{ secrets.GIT_HUB_ACCESS_TOKEN }}
-          git-commit-user: 'whereismyjetpack'
-          git-commit-email: 'mail@mail.mail'
-
-
-
+          context: .
+          push: true
+          platforms: "linux/arm64,linux/amd64"
+          tags: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.event.pull_request.head.sha || github.sha }}"
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
